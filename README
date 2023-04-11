@@ -1,1 +1,19 @@
 Project III: Tic-Tac-Toe | Rahul Badiani rb1217 & Suchit Kalluru srk170
+Purpose: To create a on-line Tic-Tac-Toe game that allows players to join the server and be automatically matched to play a game
+
+ttts.c - This is the code for the server of the game, it will control the game itself, communication with the client, and commuication with players. 
+ttt.c - This is the client; it connects to the server, handles the reading from player actions from STDIN, and writing to the players with STDOUT. 
+
+
+Implementation: 
+ttt.c 
+
+1) The program initially checks to make sure that the number of inputs that the user is supplying is suffiencet in order to actually connenct. It 
+   takes the host and service that the user wants to connect to like so "./ttt [host] [port#]". 
+
+2) Then there is a connection made using sockets in tandem with the 'connect_inet' function. The 'connect_inet' function takes in two parameters the [host]
+   and the [port#] and returns a socket that is connected to the correct endpoints; this returend socket would be saved in a socket variable in the main function. 
+   
+3) 
+
+
