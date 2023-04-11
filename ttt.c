@@ -89,10 +89,10 @@ int main(int argc, char **argv){
 
 	//Use strtok to get the token related to the X/O
 	char* X_or_O = strtok(buf, "|");
-	X_or_O = strtok(buf, "|");
-	X_or_O = strtok(buf, "|");
+	X_or_O = strtok(NULL, "|");
+	X_or_O = strtok(NULL, "|");
 
-	if((*X_or_O) == "X"){
+	if(strcmp(X_or_O, "X") ==0 ){
 		//Read from the STDIN of the player that is playing with X
 		do{
 			scanf("%s", buf);
@@ -103,7 +103,16 @@ int main(int argc, char **argv){
 		}while(strcmp(buf, "INVL")==0);
 	}
 
+	do{
+		do{
+			scanf("%s", buf); 
+			wrt(sock, buf, strlen(buf) );
+       			bytes = read(sock, buf, BUFLEN); 
+			wrt(1, buf, bytes); 
+			buf[4] ='\0'; 
+		}while(strcmp(buf, "INVL") == 0); 	
 
+	}while(strcmp(buf, "OVER") != 0);
 
 	close(sock);
 	
