@@ -62,15 +62,33 @@ int openListener(char *port, int qLen){
 
 	return sock;
 }
-
+#define BUFFLEN 200
 int main(int argc, char ** argv){
 	if(argc != 2){
 		puts("Ussage: ./tts <int>");
 		return EXIT_FAILURE; 
 	}
+
+	struct sockaddr_storage remote_host;
+	socklen_t remote_host_len;
 	
-	listener = openListener(argv[1] , QUEUE_SIZE); 
+	int listener = openListener(argv[1] , QUEUE_SIZE); 
 	if(listener <0){ return EXIT_FAILURE; }
+
+	remote_host_len = sizeof(remote_host);
+	
+	int sock = accept(listener, (struct sockaddr *)&remote_host, &remote_host_len);
+	
+	if (sock < 0) {
+		perror("accept");
+	
+	}
+	
+	char buff[BUFFLEN]; 
+	int byte = read(sock, buff, BUFFLEN); 
+	write(1,buff, byte); 
+
+	return EXIT_SUCCESS; 
 
 	
 }
