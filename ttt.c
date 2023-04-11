@@ -85,10 +85,14 @@ int main(int argc, char **argv){
 	
 	//do more stuff
 	
-	//Use strtok to get all tokens in the buffer'
-	char *token = strtok(buf, "|");
 	//Check if the user is the 'X' player and then read from the Standard output
-	if(token[2] != "X"){
+
+	//Use strtok to get the token related to the X/O
+	char* X_or_O = strtok(buf, "|");
+	X_or_O = strtok(buf, "|");
+	X_or_O = strtok(buf, "|");
+
+	if((*X_or_O) == "X"){
 		//Read from the STDIN of the player that is playing with X
 		do{
 			scanf("%s", buf);
@@ -98,6 +102,7 @@ int main(int argc, char **argv){
 			buf[4] = '\0';
 		}while(strcmp(buf, "INVL")==0);
 	}
+
 
 
 	close(sock);
