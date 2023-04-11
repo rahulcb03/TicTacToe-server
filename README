@@ -1,7 +1,8 @@
 Project III: Tic-Tac-Toe | Rahul Badiani rb1217 & Suchit Kalluru srk170
 Purpose: To create a on-line Tic-Tac-Toe game that allows players to join the server and be automatically matched to play a game
 
-ttts.c - This is the code for the server of the game, it will control the game itself, communication with the client, and commuication with players. 
+ttts.c - This is the code for the server of the game, it will control the game itself, communication with the client, and commuication with players.
+
 ttt.c - This is the client; it connects to the server, handles the reading from player actions from STDIN, and writing to the players with STDOUT. 
 
 
