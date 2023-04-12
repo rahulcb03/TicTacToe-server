@@ -64,6 +64,49 @@ int openListener(char *port, int qLen){
 
 void playGame( int sock1, int sock2){
 	//this will handle the actuall playing of the game
+
+	//First write to both sockets to BEGN sock1: X, sock2: O
+	//
+	//char board[9] 
+	//int count =0 
+	//initalize the board to all dots 
+	
+	//do 
+	//	if(count%2 == 0) 
+	//	do
+	//		create flag
+	//
+	//		read command from sock1
+	//		check if command is valid formating 
+	//
+	//		if the command is MOVE 
+	//			if space is occupied send INVL to sock1 (flag =1)
+	//			
+	//			set the board at the cords given 
+	//
+	//			check if win or draw
+	//
+	//			respond to both socks MOVD or OVER if won 
+	//
+	//		if DRAW S
+	//			send DRAW S to sock2 
+	//			read from sock2 (response must be DRAW A or DRAW R)
+	//			
+	//			if DRAW A 
+	//				send OVER D to both 
+	//			if DRAW R 
+	//				send DRAW R to sock1 
+	//				(must continue the loop to get the next response) 
+	//		if RSGN 
+	//			send OVER W to sock2 
+	//			send OVER L to sock1
+	//
+	//	while(flag is set) 
+	//
+	//	else
+	//		do the same loop above but switch sock1 and sock2 
+	//	
+	//while(the server dosent send OVER)
 }
 
 #define BUFFLEN 200
