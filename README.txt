@@ -44,5 +44,9 @@ ttts.c
  
 5) After both players are connected to the socket, and the port, they will be matched togheter for a game of tic-tac-toe through the method 'playGame' which takes in two
    sockets as its parameters, the sockets for both players. In playGame 
+   
+   
+   
+* Functionality Testing is described in the file "testPlan.txt" *
 
 
