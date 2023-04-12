@@ -1,3 +1,18 @@
 Testing: 
 ttts.c
 ttt.c
+
+                                                                      Functionality Testing:
+Setup: In order to test functionality we played a normal game of tic-tac-toe using the program. 
+    - First we started the server on one computer by logging to ilab1@cs.rutgers.edu(or any other rutgers machine) and then compiled the ttts.c program. 
+    - After that we ran the command "./ttts [port#]" replacing the port# with a port number that is avalible. 
+    - Then the the other person, the one who didn't set up the server connection, logged onto another ilab machine and then ran "./ttt [domain name of the       host server][port#]"
+    - Then the program will have mathed us both togehter for a game 
+    
+    
+Case 1) Host wins; we ran the following move order 
+       - Host: 1,1
+       - Second player: 2,2
+       - Host: 1,2 
+       - Second player: 3,2
+       - Host: 1,3 --- Host Wins
