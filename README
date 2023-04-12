@@ -30,6 +30,19 @@ ttt.c
    
 ttts.c 
 
-1) 
+1) Since this is the program that takes care of the server, the program first checks to make sure that the paramters that the user inputs is properly formatted:
+   "./ttts [port#]". 
+   
+2) Then the program will open a listener to the socket through the method 'openListener' which takes in the parameters [port#] and then the size of the Queue required for
+   the connectoin. The method 'openListener' then will create a socket in the domain and then bind the socket to the requested port number. Then it will return the opened 
+   socket back to the main function which will be saved in a variable for useage later. 
+
+3) After the socket connection is created, the program then connects the socket to the client trying to connect to that specifc port number. 
+
+4) The program then checks if the player types the key word 'PLAY', in which case it will start to collect and store the players name. After it will also connect any other   
+   player that is trying to connect to that specific port number, and request their name as well (after making sure that the user types the keyword 'PLAY').
+ 
+5) After both players are connected to the socket, and the port, they will be matched togheter for a game of tic-tac-toe through the method 'playGame' which takes in two
+   sockets as its parameters, the sockets for both players. In playGame 
 
 
