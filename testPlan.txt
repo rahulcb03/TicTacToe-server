@@ -51,8 +51,8 @@ Case 4) Draw Testing | Draw Message Testing
         A) Accepting the Draw
            We ran the following move order: 
            - Host: 1,1
-           - Second Player: Draw |2| S
-           - Host: Draw |2| A
+           - Second Player: Draw |2| S|
+           - Host: Draw |2| A|
            - Both players recieve their resepective message: 
               - OVER|21|W|[HOST] has resigned.|
               - OVER|30|W|[Second Player] has resigned.|
@@ -61,7 +61,7 @@ Case 4) Draw Testing | Draw Message Testing
            We ran the following move order: 
            - Host: 1,1
            - Second Player: Draw |2| S
-           - Host: Draw |2| R
+           - Host: Draw |2| R|
            - Second Player: 2,2
            - Host: 1,2
            - Second Player: 3,2
@@ -83,5 +83,22 @@ Case 5) Resignation Testing
  
                                                                       Error Testing:
 Case 1) Invalid Commands
+        A) We tested the following misspellings of commands:
+           - PLAY -> ply
+             - Recieved Responce: 
+           - MOVE -> mv
+             - Recieved Responce:
+           - RSGN -> resign
+             - Recieved Responce:
+           - DRAW -> drw
+             - Recieved Responce:
+        
+        B) We tested the following incorrect sequence of commands(without any prior messages):
+           - Host: Draw |2| A|
+             - Recieved Response: 
+           -  Host: Draw |2| R|
+              - Recieved Response: 
+           
 
 Case 2) Invalid Moves 
+        
