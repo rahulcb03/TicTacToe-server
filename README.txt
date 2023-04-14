@@ -43,9 +43,14 @@ ttts.c
    player that is trying to connect to that specific port number, and request their name as well (after making sure that the user types the keyword 'PLAY').
  
 5) After both players are connected to the socket, and the port, they will be matched togheter for a game of tic-tac-toe through the method 'playGame' which takes in two
-   sockets as its parameters, the sockets for both players. In playGame an empty board is created and the game itself takes place. The function will read the users input, either from socket 1 or socket 2 depending on whos turn it is, and then read the command that the user types in. It then responds 
+   sockets as its parameters, the sockets for both players. In playGame an empty board is created and the game itself takes place. The function will read the users input, 
+   either from socket 1 or socket 2 depending on whos turn it is, and then read the command that the user types in. It then responds to the corresponding command: 'MOVE'
+   'DRAW' or 'RSGN'. For the 'MOVE' command the program will validate if the move is allowed, make the adjustment to the game board, check if there is a win or the board 
+   is full, and then relay the move to the players. For the 'DRAW' command the program will promote the user that has not requested the draw for a draw, the user then can 
+   accept, in which case the program relays the game state to both players; the user can also reject, in which case the program will request the user who requested the draw 
+   for their next move. The last case of 'RSGN' will relay the information that one player has resigned from the game and terminate. 
    
    
-* Functionality Testing is described in the file "testPlan.txt" *
+* Functionality Testing & Error Testing is described in the file "testPlan.txt" *
 
 
