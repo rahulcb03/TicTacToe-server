@@ -35,7 +35,7 @@ Case 2) Second Player wins | Horizontal Win Test
            - Host Recieves: 
              - OVER|38|L|[Second player] has completed a line.|
 
- Case 3) Diagonal Win Test 
+Case 3) Diagonal Win Test 
         We ran the following move order:
          - Host: 2,2
          - Second player: 2,3
