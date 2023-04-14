@@ -5,7 +5,8 @@ ttt.c
 Initial Setup: In order to test functionality we played a normal game of tic-tac-toe using the program. 
     - First we started the server on one computer by logging to ilab1@cs.rutgers.edu(or any other rutgers machine) and then compiled the ttts.c program. 
     - After that we ran the command "./ttts [port#]" replacing the port# with a port number that is avalible. 
-    - Then the the other person, the one who didn't set up the server connection, logged onto another ilab machine (seperate from the inital one               connected) and then ran "./ttt [domain name of the host server][port#]"
+    - Then the the other person, the one who didn't set up the server connection, logged onto another ilab machine (seperate from the inital one
+      connected) and then ran "./ttt [domain name of the host server][port#]"
     - Then the program will have matched us both togehter for a game 
 
                                                                       Functionality Testing:
@@ -83,9 +84,11 @@ Case 5) Resignation Testing | Resignation Message Testing
             
 Case 6) Multiple Games Happening At Once | Multi-threading
         - After we did the inital set up we did the following:  
-          - We logged onto another ilab machine (differnt from the inital two we connected two) and then ran the command "./ttt [domain name of the host             server][port#]"
+          - We logged onto another ilab machine (differnt from the inital two we connected two) and then ran the command "./ttt [domain name of the host
+            server][port#]"
           - Then we did the same thing again in another ilab machine(different then the three already connected two)
-          - The result of this is 2 concurrent games that are being played on the same server, proving the functionality of multithreading in this                   program
+          - The result of this is 2 concurrent games that are being played on the same server, proving the functionality of multithreading in this
+            program
           
                                                                       Error Testing:
 Case 1) Invalid Commands
