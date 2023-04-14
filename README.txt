@@ -43,8 +43,7 @@ ttts.c
    player that is trying to connect to that specific port number, and request their name as well (after making sure that the user types the keyword 'PLAY').
  
 5) After both players are connected to the socket, and the port, they will be matched togheter for a game of tic-tac-toe through the method 'playGame' which takes in two
-   sockets as its parameters, the sockets for both players. In playGame 
-   
+   sockets as its parameters, the sockets for both players. In playGame an empty board is created and the game itself takes place. The function will read the users input, either from socket 1 or socket 2 depending on whos turn it is, and then read the command that the user types in. It then responds 
    
    
 * Functionality Testing is described in the file "testPlan.txt" *
