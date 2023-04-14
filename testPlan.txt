@@ -72,7 +72,7 @@ Case 4) Draw Testing | Draw Message Testing
                - OVER|29|L|[Host] has completed a line.|
         
  
-Case 5) Resignation Testing
+Case 5) Resignation Testing | Resignation Message Testing
         We ran the following move order: 
         - Host: RSGN |0|
         - Second Player Wins
@@ -101,4 +101,19 @@ Case 1) Invalid Commands
            
 
 Case 2) Invalid Moves 
+        - We tested moves that were outside of the board (the parenthesis were ommited during testing)
+          - (9,9)
+            - Recieved Message: 
+          - (0,0)
+             - Recieved Message: 
+          - (1.2,3.4)
+             - Recieved Message: 
+          - (-1,-1)
+             - Recieved Message: 
+        
+        - We tested if the cell was already occupied
+          We ran the following move order: 
+          - Host: 1,1
+          - Second Player: 1,1 
+            - Recieved Message: 
         
