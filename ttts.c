@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <errno.h> 
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
@@ -24,7 +25,7 @@ int openListener(char *port, int qLen){
 	error = getaddrinfo(NULL, port, &hint, &info_list);
 
 	if (error) {
-		fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(error));
+		perror("getaddrinfo");
 		return -1;
 	}
 
@@ -116,6 +117,10 @@ void playGame( int sk1, int sk2){
 	//this will handle the actuall playing of the game
 
 	//First write to both sockets to BEGN sock1: X, sock2: O
+	
+	wrt(sk1, "BEGN|2|X|", 9); 
+	wrt(sk2, "BEGN|2|0|", 9); 
+
 	
 	char board[9] = "........."; //empty board
 	int count =0 ;
@@ -250,7 +255,7 @@ void playGame( int sk1, int sk2){
 
 int main(int argc, char ** argv){
 	if(argc != 2){
-		puts("Ussage: ./tts <int>");
+		puts("Ussage: ./ttts <int>");
 		return EXIT_FAILURE; 
 	}
 
