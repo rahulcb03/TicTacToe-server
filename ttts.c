@@ -1,5 +1,6 @@
+#define _POSIX_C_SOURCE 200809L
+#include <errno.h>
 #include <stdio.h>
-#include <errno.h> 
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
@@ -7,6 +8,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <netdb.h>
+#include <signal.h>
+
 #define QUEUE_SIZE 8
 #define BUFSIZE 200
 
@@ -80,11 +83,11 @@ int checkForm(char *buf, int bytes ){
 
 	if(strcmp(buf, "MOVE") != 0 && strcmp(buf, "RSGN") != 0 && strcmp (buf, "DRAW") != 0 ){ return 1; }
 
-	char *temp = strtok(NULL, "|"); 
+	char *temp = strtok(&buf[4], "|"); 
 	if (temp ==NULL){return 1; }
 	
 	int x = atoi(temp); 
-	int pos = 5 + strlen(temp) +2; 
+	int pos = 5 + strlen(temp) +1; 
 	if( x != strlen(&buf[pos]) ) {return 1; }
 
 	return 0;
@@ -211,23 +214,26 @@ void playGame( int sk1, int sk2){
 			//if DRAW S
 			if(strcmp(buf,"DRAW" ) == 0 && buf[7] == 'S' ){
 				wrt(sock2, "DRAW|2|S|\n" , 10); 
+				int drawFlag; 
 				do{
+					drawFlag =0; 
 					bytes = read(sock2, buf, BUFSIZE); 
 					if ( checkForm(buf, bytes) ){
 						strcpy(hold, "INVL|17|incorrect format|\n"); 
 						wrt(sock1, hold, strlen(hold) ); 
-						contFlag=1; 
+						drawFlag=1; 
 						continue; 
 					}
 					if(strcmp(buf, "DRAW") != 0 ){
 						strcpy(hold, "INVL|11|enter DRAW|\n");
 						wrt(sock2, hold, strlen(hold) ) ; 
-						contFlag =1; 
+						drawFlag =1; 
 						continue; 
 					}
 					if(buf[7] == 'R' ){
 						strcpy(hold, "DRAW|2|R|\n" );
 						wrt(sock1, hold, strlen(hold) ) ; 
+						contFlag =1; 
 					}
 					if(buf[7] == 'A') {
 						strcpy(hold, "OVER|2|D|\n" );
@@ -241,8 +247,8 @@ void playGame( int sk1, int sk2){
 						contFlag =1; 
 						continue; 
 					}
-				}while(contFlag);
-			       	contFlag =0; 	
+				}while(drawFlag);
+			       		
 					
 			}
 
