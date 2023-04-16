@@ -99,17 +99,21 @@ int checkForm(char *buf, int bytes ){
 int checkWin(char *board){
 	for(int i =0 ; i<3; i++){
 		if(board[3*i] == board[3*i +1] && board[3*i] == board[3*i +2] ){
-			return 1; 
+			if(board[3*i]=='.'){}
+			else{return 1;} 
 		}
 		if(board[i] == board[i +3] && board[i] == board[i+6] ){
-			return 1; 
+			if(board[i]=='.'){}
+			else{return 1;}  
 		}
 	}
 	if(board[0] == board[4] && board[0] == board[8] ){
-		return 1; 
+		if(board[0]=='.'){}
+			else{return 1;}  
 	}
 	if(board[2] == board[4] && board[2] == board[6] ){
-		return 1; 
+		if(board[2]=='.'){}
+			else{return 1;}  
 	}
 	return 0; 
 
