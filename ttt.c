@@ -1,10 +1,13 @@
 
+#define _POSIX_C_SOURCE 200809L
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/socket.h>
 #include <netdb.h>
 #include <string.h>
+
+
 int connect_inet(char *host, char *service){
 
 	struct addrinfo hints, *info_list, *info;
@@ -83,7 +86,6 @@ int main(int argc, char **argv){
 	wrt(1, buf, bytes);
        	buf[bytes] ='\0';	
 	
-	//do more stuff
 	
 	//Check if the user is the 'X' player and then read from the Standard output
 
@@ -104,6 +106,9 @@ int main(int argc, char **argv){
 	}
 
 	do{
+		bytes = read(sock, buf, BUFLEN); 
+		wrt(1, buf, bytes); 
+		if(buf[0] == 'O'){break; }
 		do{
 			scanf("%s", buf); 
 			wrt(sock, buf, strlen(buf) );
