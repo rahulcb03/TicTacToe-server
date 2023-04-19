@@ -97,6 +97,7 @@ int checkForm(char *buf, int bytes ){
 //return 1 if Win
 //return 2 if Draw 
 int checkWin(char *board){
+	//Win Scenarios
 	for(int i =0 ; i<3; i++){
 		if(board[3*i] == board[3*i +1] && board[3*i] == board[3*i +2] ){
 			if(board[3*i]=='.'){}
@@ -115,9 +116,21 @@ int checkWin(char *board){
 		if(board[2]=='.'){}
 			else{return 1;}  
 	}
+	
+	int draw = 0; 
+	//Checking for the draw
+	for(int i=0; i<9; i++){
+		if(board[i] == '.'){
+			//If there is still a spot open then it isn't a draw
+			draw =1; 	
+		}
+	}
+	
+	if(draw ==0){
+		return 2;	
+	}
+	//Nothing
 	return 0; 
-
-
 }
 	
 void playGame( int sk1, int sk2){
