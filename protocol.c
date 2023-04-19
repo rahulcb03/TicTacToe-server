@@ -13,6 +13,50 @@
 #define QUEUE_SIZE 8
 #define BUFSIZE 200
 
+int checkWin(char *board){
+	//Checking the diagonal
+	for(int i =0; i<3; i++){
+		if(board[3*i]==board[3*i+1] && board[3*i] == board[3*i+2]){
+			if(board[3*i]=='.'){}
+			else{return 1;}
+		}
+		if(board[i] == board[i +3] && board[i] == board[i+6] ){
+			if(board[i]=='.'){}
+			else{return 1;}  
+		}
+	}
+	
+	
+	//Checking the top right diagonal
+	if(board[0] == board[4] && board[0] == board[8] ){
+		if(board[0]=='.'){}
+			else{return 1;}  
+	}
+	
+	//Checking the top left diagonal
+	if(board[2] == board[4] && board[2] == board[6] ){
+		if(board[2]=='.'){}
+			else{return 1;}  
+	}
+	
+	//Checking for the draw
+	int draw = 0; 
+	for(int i=0; i<9; i++){
+		if(board[i] == '.'){
+			//If there is still a spot open then it isn't a draw
+			draw =1; 	
+		}
+	}
+	if(draw ==0){
+		return 2;	
+	}
+	
+	//Nothing
+	return 0; 
+	
+}
+
+
 //If user types the move command
 int move(int sock1, char *buf, char *board){
 	
