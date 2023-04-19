@@ -28,6 +28,11 @@ int move(int sock1, char *buf, char *board, char *hold){
 	return 0; 
 }
 
+//If the user wants to draw
+int draw(int sock1, int sock2, char *buf, char *board, char*hold){
+	return 0;
+}
+
 //If the active user forefited
 int resign(int sock1, int sock2){
 	
