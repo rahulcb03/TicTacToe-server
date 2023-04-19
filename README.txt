@@ -58,11 +58,12 @@ protocol.c
 2) The "MOVE" command checks if the current move is valid, meaning that the space isn't occupied already, and if the space is within the board. Then if there is a violation
    the program will report to the user. 
    
-3) The "DRAW" command contains the sequence of inputs required for a Draw in the game, and the various other possible occurances when a draw is requested.
+3) The "DRAW" command contains the sequence of inputs required for a Draw in the game, and the various other possible occurances when a draw is requested. The program first 
+   requests the second player of thier choice regarding the draw; either Accepting (A) or Rejecting (R). Then the program will check if the messages are correctly written,
+   and then proceed with the correct responses for both. If the user accepts the draw the program will send messages to both players about the draw and terminate the game, 
+   if the draw is rejected it will go back to the inital user who requested the draw to play thier move. 
 
 4) The "RSGN" command outputs the loss message and the win message to the corresponding players, and then terminates. 
    
    
 * Functionality Testing & Error Testing is described in the file "testPlan.txt" *
-
-
