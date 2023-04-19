@@ -62,6 +62,76 @@ int p_recv( player_t *p, char *msg ){
 	return 0;
 }
 
+
+//Writing to the STDOUT
+void wrt(int fd, char *buf, int bufLen){
+	if(write(fd, buf, bufLen) == -1){
+		perror("write");
+		exit(1); 
+	}
+}
+
+//return 1 if invalid structure of user input
+//return 0 is valid structure of user input
+int checkForm(char *buf, int bytes ){
+	buf[bytes] = '\0';
+	
+	buf[4] = '\0'; 
+
+	if(strcmp(buf, "MOVE") != 0 && strcmp(buf, "RSGN") != 0 && strcmp (buf, "DRAW") != 0 ){ return 1; }
+
+	char *temp = strtok(&buf[4], "|"); 
+	if (temp ==NULL){return 1; }
+	
+	int x = atoi(temp); 
+	int pos = 5 + strlen(temp) +1; 
+	if( x != strlen(&buf[pos]) ) {return 1; }
+
+	return 0;
+}
+
+//return 0 if nothing 
+//return 1 if Win
+//return 2 if Draw 
+int checkWin(char *board){
+	//Win Scenarios
+	for(int i =0 ; i<3; i++){
+		if(board[3*i] == board[3*i +1] && board[3*i] == board[3*i +2] ){
+			if(board[3*i]=='.'){}
+			else{return 1;} 
+		}
+		if(board[i] == board[i +3] && board[i] == board[i+6] ){
+			if(board[i]=='.'){}
+			else{return 1;}  
+		}
+	}
+	if(board[0] == board[4] && board[0] == board[8] ){
+		if(board[0]=='.'){}
+			else{return 1;}  
+	}
+	if(board[2] == board[4] && board[2] == board[6] ){
+		if(board[2]=='.'){}
+			else{return 1;}  
+	}
+	
+	int draw = 0; 
+	//Checking for the draw
+	for(int i=0; i<9; i++){
+		if(board[i] == '.'){
+			//If there is still a spot open then it isn't a draw
+			draw =1; 	
+		}
+	}
+	
+	if(draw ==0){
+		return 2;	
+	}
+	//Nothing
+	return 0; 
+}
+
+
+
 int move(int sock1, char *msg, char *board){
 	char hold[100]; 
 	int x = ((int) msg[9] - '0') - 1;
