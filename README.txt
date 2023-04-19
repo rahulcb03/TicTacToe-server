@@ -55,7 +55,12 @@ protocol.c
 
 1) The 'protocol.c' method is used for user-input execution. This would be the following commands: "MOVE", "DRAW", and "RSGN". 
 
-2) The "MOVE" command will 
+2) The "MOVE" command checks if the current move is valid, meaning that the space isn't occupied already, and if the space is within the board. Then if there is a violation
+   the program will report to the user. 
+   
+3) The "DRAW" command contains the sequence of inputs required for a Draw in the game, and the various other possible occurances when a draw is requested.
+
+4) The "RSGN" command outputs the loss message and the win message to the corresponding players, and then terminates. 
    
    
 * Functionality Testing & Error Testing is described in the file "testPlan.txt" *
