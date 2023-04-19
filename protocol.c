@@ -21,9 +21,16 @@ int move(int sock1, char *buf, char *board, char *hold){
 	
 	//If the cell is already occupied
 	if(board[3 * x + y] != '.'){
-		strcpy(hold, "INVL|16|position filled|\n");
+		strcpy(hold, "INVL|16|Position Filled|\n");
 		wrt(sock1, hold, strlen(hold));
 		return 1; 
+	}
+	
+	//If the desired cell is out of the game board 
+	if((3 * x + y) > 9 || (3 * x + y) <=0){
+		strcpy(hold, "INVL|18|Outside Of Board|\n");
+		wrt(sock1, hold, strlen(hold));
+		return 1;
 	}
 
 	return 0; 
