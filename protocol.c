@@ -13,6 +13,30 @@
 #define QUEUE_SIZE 8
 #define BUFSIZE 200
 
+void wrt(int fd, char *buf, int bufLen){
+	if(write(fd, buf, bufLen) == -1){
+		perror("write");
+		exit(1); 
+	}
+}
+
+int checkForm(char *buf, int bytes ){
+	buf[bytes] = '\0';
+	
+	buf[4] = '\0'; 
+
+	if(strcmp(buf, "MOVE") != 0 && strcmp(buf, "RSGN") != 0 && strcmp (buf, "DRAW") != 0 ){ return 1; }
+
+	char *temp = strtok(&buf[4], "|"); 
+	if (temp ==NULL){return 1; }
+	
+	int x = atoi(temp); 
+	int pos = 5 + strlen(temp) +1; 
+	if( x != strlen(&buf[pos]) ) {return 1; }
+
+	return 0;
+}
+
 int checkWin(char *board){
 	//Checking the diagonal
 	for(int i =0; i<3; i++){
