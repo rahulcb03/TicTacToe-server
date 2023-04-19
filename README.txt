@@ -45,10 +45,17 @@ ttts.c
 5) After both players are connected to the socket, and the port, they will be matched togheter for a game of tic-tac-toe through the method 'playGame' which takes in two
    sockets as its parameters, the sockets for both players. In playGame an empty board is created and the game itself takes place. The function will read the users input, 
    either from socket 1 or socket 2 depending on whos turn it is, and then read the command that the user types in. It then responds to the corresponding command: 'MOVE'
-   'DRAW' or 'RSGN'. For the 'MOVE' command the program will validate if the move is allowed, make the adjustment to the game board, check if there is a win or the board 
-   is full, and then relay the move to the players. For the 'DRAW' command the program will promote the user that has not requested the draw for a draw, the user then can 
-   accept, in which case the program relays the game state to both players; the user can also reject, in which case the program will request the user who requested the draw 
-   for their next move. The last case of 'RSGN' will relay the information that one player has resigned from the game and terminate. 
+   'DRAW' or 'RSGN'. Each command, 'MOVE', 'DRAW', or 'RSGN', is handeld by the 'protocol.c' file which will take the appropriate action given the input recieved. 
+
+6) After the necessary move has been made/the 'DRAW' or 'RSGN' sequences have been played out, the program will then check the game board through the 'checkWin' method. The
+   'checkWin' method will check the game board for either a win, full board(in which case its a draw), or if the game needs to continue. Depending on the value retuerned from
+   this method the program will then take appropriate action, either ending the game in the case of a win/full board, or continuing the game if its there are moves to be played.
+   
+protocol.c
+
+1) The 'protocol.c' method is used for user-input execution. This would be the following commands: "MOVE", "DRAW", and "RSGN". 
+
+2) The "MOVE" command will 
    
    
 * Functionality Testing & Error Testing is described in the file "testPlan.txt" *
