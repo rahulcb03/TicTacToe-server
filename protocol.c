@@ -132,7 +132,7 @@ int checkWin(char *board){
 
 
 
-int move(int sock1, char *msg, char *board){
+int move(struct *player1, char * msg, char *board){
 	char hold[100]; 
 	int x = ((int) msg[9] - '0') - 1;
 	int y = ((int) msg[11]- '0') - 1;
@@ -140,10 +140,19 @@ int move(int sock1, char *msg, char *board){
 	//If the cell is already occupied
 	if(board[3 * x + y] != '.'){
 		strcpy(hold, "INVL|16|position filled|\n");
-		write(sock1, hold, strlen(hold));
+		write(player1->sck, hold, strlen(hold));
 		return 1;
 	}
-
+	
+	//If the cell is out of board
+	if(!(x<=3  && x >0 && y<=3 && y>0)){
+		strcpy(hold, "INVL|29|Unplayable: outside of board|\n");
+		write(player1->sck, hold, strlen(hold));
+		return 1;
+	}
+	
+	//If the cell entered is valid 
+	board[3 * x + y] = msg[7];
 	return 0;
 }
 
