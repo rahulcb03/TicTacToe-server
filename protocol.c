@@ -84,7 +84,7 @@ int checkWin(char *board){
 //If user types the move command
 int move(int sock1, char *buf, char *board){
 	
-	char * hold[1000];
+	char hold[1000];
 	
 	int x = ((int) buf[9] - '0') - 1;
 	int y = ((int) buf[11]- '0') - 1;
