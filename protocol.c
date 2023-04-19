@@ -23,6 +23,7 @@ int move(int sock1, char *buf, char *board, char *hold){
 	if(board[3 * x + y] != '.'){
 		strcpy(hold, "INVL|16|position filled|\n");
 		wrt(sock1, hold, strlen(hold));
+		return 1; 
 	}
 
 	return 0; 
