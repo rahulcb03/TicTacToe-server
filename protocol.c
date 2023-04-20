@@ -153,6 +153,8 @@ int move(struct *player1, char * msg, char *board){
 	
 	//If the cell entered is valid 
 	board[3 * x + y] = msg[7];
+	
+	//Check Win
 	return 0;
 }
 
