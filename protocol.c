@@ -71,25 +71,6 @@ void wrt(int fd, char *buf, int bufLen){
 	}
 }
 
-//return 1 if invalid structure of user input
-//return 0 is valid structure of user input
-int checkForm(char *buf, int bytes ){
-	buf[bytes] = '\0';
-	
-	buf[4] = '\0'; 
-
-	if(strcmp(buf, "MOVE") != 0 && strcmp(buf, "RSGN") != 0 && strcmp (buf, "DRAW") != 0 ){ return 1; }
-
-	char *temp = strtok(&buf[4], "|"); 
-	if (temp ==NULL){return 1; }
-	
-	int x = atoi(temp); 
-	int pos = 5 + strlen(temp) +1; 
-	if( x != strlen(&buf[pos]) ) {return 1; }
-
-	return 0;
-}
-
 //return 0 if nothing 
 //return 1 if Win
 //return 2 if Draw 
