@@ -167,7 +167,8 @@ int draw(int sock1, int sock2, char *buf, char *board, char*hold){
 int resign(struct *player1, struct *player2){
 	char msg[100];
 	//length = bar + L/W + winners name + length of " has won|"
-	int lenMSG = 2 + (player2->name.length()) + 9; 
+	int lenMSG = 2 + (str.len(player2->)) + 9; 
+	
 	
 	//Losers Message
 	strcpy(msg, ("OVER|%d|L|%s has won|",  lenMSG, player2->name));
