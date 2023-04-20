@@ -162,10 +162,19 @@ int draw(int sock1, int sock2, char *buf, char *board, char*hold){
 }
 
 //If the active user forefited
-int resign(int sock1, int sock2){
-
-	wrt(sock1, "OVER|2|L|\n", 10);
-	wrt(sock2, "OVER|2|W|\n", 10);
+int resign(struct *player1, struct *player2){
+	char msg[100];
+	//length = bar + L/W + winners name + length of " has won|"
+	int lenMSG = 2 + (player2->name.length()) + 9; 
+	
+	//Losers Message
+	strcpy(msg, ("OVER|%d|L|%s has won|",  lenMSG, player2->name));
+	wrt(player1->sck, msg);
+	
+	//Winners Message
+	char msgW[100];
+	strcpy(msgW, ("OVER|%d|W|%s has won|",  lenMSG, player2->name));
+	wrt(player2->sck, msgW);
 
 	return 0;
 }
