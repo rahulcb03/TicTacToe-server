@@ -113,7 +113,7 @@ int checkWin(char *board){
 
 
 
-int move(struct *player1, char * msg, char *board){
+int move(struct *player1, struct *player2, char * msg, char *board){
 	char hold[100]; 
 	int x = ((int) msg[9] - '0') - 1;
 	int y = ((int) msg[11]- '0') - 1;
@@ -136,7 +136,33 @@ int move(struct *player1, char * msg, char *board){
 	board[3 * x + y] = msg[7];
 	
 	//Check Win
-	return 0;
+	int wL = checkWin(board);
+	//player wins
+	if(wL==0){
+		//handles the win message and loss message
+		resign(player1, player2);
+	}
+	//game continues
+	else if(wL==1){
+		return 0; 
+	}
+	//draw case
+	else if(wL==2){
+		char msgD[100];
+		//length = bar + L/W + length of "Game Is Drawn|"
+		int lenMSG = 2 + 14; 
+		//Conver the length to a string
+		char msgBytes[] = toString(lenMSG);
+
+		//Send Message to both players
+		strcpy(msgD, "DRAW|");
+		strcpy(msgD, msgBytes);
+		strcpy(msgD, "|D|");
+		strcpy(msgD, "Game Is Drawn|");
+		wrt(player1->sck, msgD);
+		wrt(player2->sck, msgD)
+		return 1;
+	}
 }
 
 //If the user wants to draw
@@ -146,18 +172,27 @@ int draw(int sock1, int sock2, char *buf, char *board, char*hold){
 
 //If the active user forefited
 int resign(struct *player1, struct *player2){
-	char msg[100];
+	char msgL[100];
 	//length = bar + L/W + winners name + length of " has won|"
 	int lenMSG = 2 + (str.len(player2->)) + 9; 
-	
+	//Conver the length to a string
+	char msgBytes[] = toString(lenMSG);
 	
 	//Losers Message
-	strcpy(msg, ("OVER|%d|L|%s has won|",  lenMSG, player2->name));
-	wrt(player1->sck, msg);
+	strcpy(msgL, "OVER|");
+	strcpy(msgL, msgBytes);
+	strcpy(msgL, "|L|");
+	strcpy(msgL, player1->name);
+	strcpy(msgL, "has won|");
+	wrt(player1->sck, msgL);
 	
 	//Winners Message
 	char msgW[100];
-	strcpy(msgW, ("OVER|%d|W|%s has won|",  lenMSG, player2->name));
+	strcpy(msgW, "OVER|");
+	strcpy(msgW, msgBytes);
+	strcpy(msgW, "|W|");
+	strcpy(msgW, player1->name);
+	strcpy(msgW, "has won|");
 	wrt(player2->sck, msgW);
 
 	return 0;
