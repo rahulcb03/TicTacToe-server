@@ -114,13 +114,19 @@ Case 1) Invalid Commands
               - Recieved Response: 
         
         C) We tested the following incorrect formatting: 
-         - Host: MOVE |5|X|1,1|
+         - Host: MOVE|5|X|1,1|
            - Recieved Responce: 
-         - Host: DRAW |1|S|
+         - Host: DRAW|1|S|
            - Recieved Responce: 
-         - Host: RSGN|1|O
+         - Host: RSGN|1|2,2
            - Recived Responce: 
            
+         D) We tested not recieveing the correct formatting given correct number of bytes: 
+         - Host: MOVE|6|X|1,1
+           - Recieved Responce: 
+         - Host: DRAW|1|S
+           - Recieved Responce: 
+         
 Case 2) Invalid Moves 
         A) We tested moves that were outside of the board (the parenthesis were ommited during testing)
            - (9,9)
