@@ -89,6 +89,11 @@ Case 6) Multiple Games Happening At Once | Multi-threading
           - Then we did the same thing again in another ilab machine(different then the three already connected two)
           - The result of this is 2 concurrent games that are being played on the same server, proving the functionality of multithreading in this
             program
+
+Case 7) Disconnected from the Server
+        - We wanted to test if the other user gets the relevant message when the other user randomly disconnects from the server.
+        - To test this we ran a regular game and had one player turn off the WIFI on thier computer
+        - The other player recieved the responce: 
           
                                                                       Error Testing:
 Case 1) Invalid Commands
@@ -107,8 +112,15 @@ Case 1) Invalid Commands
              - Recieved Response: 
            -  Host: Draw |2| R|
               - Recieved Response: 
+        
+        C) We tested the following incorrect formatting: 
+         - Host: MOVE |5|X|1,1|
+           - Recieved Responce: 
+         - Host: DRAW |1|S|
+           - Recieved Responce: 
+         - Host: RSGN|1|O
+           - Recived Responce: 
            
-
 Case 2) Invalid Moves 
         A) We tested moves that were outside of the board (the parenthesis were ommited during testing)
            - (9,9)
