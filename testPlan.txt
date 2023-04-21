@@ -124,7 +124,7 @@ Case 1) Invalid Commands
          D) We tested not recieveing the correct formatting given correct number of bytes: 
          - Host: MOVE|6|X|1,1
            - Recieved Responce: 
-         - Host: DRAW|1|S
+         - Host: DRAW|1||S
            - Recieved Responce: 
          
 Case 2) Invalid Moves 
