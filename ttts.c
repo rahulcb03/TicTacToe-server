@@ -9,6 +9,7 @@
 #include <sys/wait.h>
 #include <netdb.h>
 #include <signal.h>
+#include <pthread.h>
 #include "protocol.h"
 
 #define QUEUE_SIZE 8
@@ -69,7 +70,7 @@ int openListener(char *port, int qLen){
 
 int checkName(player_t *head, char *name){
 	player_t *ptr = head; 
-	name[strlen(name) -1] = '\0'; 
+	 
 	while(ptr != NULL){
 		if(strcmp(ptr->name, name) ==0){ return 1; }
 	}
@@ -96,6 +97,9 @@ int main(int argc, char ** argv){
 
 	remote_host_len = sizeof(remote_host);
 	
+	int i=0; 
+
+	pthread_t id[100]; 
 	player_t *head = NULL;
 	player_t *ptr = head; 
 	player_t *p; 
@@ -111,10 +115,10 @@ int main(int argc, char ** argv){
 		}
 			
 		if(ptr==NULL){
-			head = (player_t *)malloc(sizeof(player_t) ); 
-			head->len =0; 
-			head->sck = sock1; 
-			head->next = NULL; 
+			ptr = (player_t *)malloc(sizeof(player_t) ); 
+			ptr->len =0; 
+			ptr->sck = sock1; 
+			ptr->next = NULL; 
 		}	
 		else{
 			ptr->next = (player_t *)malloc(sizeof(player_t) ); 
@@ -181,30 +185,30 @@ int main(int argc, char ** argv){
 				//do something with name herei
 				if( checkName(head, &msg[5+strlen(&msg[5])+1] )) {
 					strcpy(hold, "INVL|12|name in use|"); 
-					wrt(sock1, hold, strlen(hold) );
+					wrt(sock2, hold, strlen(hold) );
 				      	cont =1; 	
 					continue; 
 				}
 				
 				strcpy(ptr->name, &msg[5+strlen(&msg[5])+1] ); 
 				strcpy(hold, "WAIT|0|\n") ;
-				write(sock1, hold, strlen(hold) ) ; 	
+				write(sock2, hold, strlen(hold) ) ; 	
 			 
 			}
 			else{
 				strcpy(hold, "INVL|19|ussage: PLAY <str>|");
-				write(sock1, hold, strlen(hold) ) ; 
+				write(sock2, hold, strlen(hold) ) ; 
 				cont=1; 
 			}
 
 		}while(cont); 
 
 		//this will call play game which will handle the game 
-		playGame(p, ptr); 	
+		pthread_create(&id[i],NULL, playGame , p ); 
+		i++; 	
 	}
 
 	return EXIT_SUCCESS; 
 
 	
 }
-
