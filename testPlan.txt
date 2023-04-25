@@ -90,16 +90,11 @@ Case 6) Multiple Games Happening At Once | Multi-threading
           - The result of this is 2 concurrent games that are being played on the same server, proving the functionality of multithreading in this
             program
 
-Case 7) Disconnected from the Server
-        - We wanted to test if the other user gets the relevant message when the other user randomly disconnects from the server.
-        - To test this we ran a regular game and had one player turn off the WIFI on thier computer
-        - The other player recieved the responce: 
- 
-Case 8) Name is in Use: 
+Case 7) Name is in Use: 
         - We wanted to test if the program is able to detect the same name
         - To test this we ran a regular game and had one player sign in as the name: "BOB"
         - Then the second play also tried the name "BOB"
-        - The second player got the responce: 
+        - The second player got the responce: INVL|12|name in use|
           
                                                                       Error Testing:
 Case 1) Invalid Commands
