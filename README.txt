@@ -26,8 +26,8 @@ protocol.c: Server - Client Interactions of the game
 
 1) The 'protocol.c' method is used for user-input execution. This would be the following commands: "MOVE", "DRAW", and "RSGN" as well as the other game related parts like win checking, game-level error checking etc. 
 
-2) In playGame an empty board is created and the game itself takes place. The function will read the users input, either from socket 1 or socket 2 depending on whos turn it is, and then read the command that the user types in. It then responds to the corresponding command: 'MOVE'
-'DRAW' or 'RSGN'. Each command, 'MOVE', 'DRAW', or 'RSGN', is handeld by the 'protocol.c' file which will take the appropriate action given the input recieved. 
+2) In playGame an empty board is created and the game itself takes place. The function will read the users input, either from socket 1 or socket 2 depending on whos turn it is, and then read the command that the user types in. The playGame function then calls the "p_recv" function which creates a node associated with each player and then stores values specifc to that player. For instance, "p_recv" will add the users name into the name field and then keep track of thier repsonses in the buffer etc. Then back in the playGame function the program correspondingly respond to the commands: 'MOVE'
+'DRAW' or 'RSGN'.
 
 3) The "MOVE" command checks if the current move is valid, meaning that the space isn't occupied already, and if the space is within the board. Then if there is a violation the program will report to the user, and if there isn't any the program will add the move to the game board, and then report the current state of the game board back to both players.  
 
