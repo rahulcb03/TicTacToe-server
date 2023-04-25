@@ -6,7 +6,7 @@ Two files being submitted:
 ttts.c - This is the code for the server of the game; it will control the game itself, communication with the client, and communication with players.
 
 
-ttt.c - This is the client; it connects to the server, handles the reading from player actions from STDIN, and writes to the players with STDOUT. 
+protoc.c - Handles the server - client interaction part of the game 
 
 
 Implementation: 
