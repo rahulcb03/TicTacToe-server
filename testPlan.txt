@@ -132,7 +132,7 @@ Case 1) Invalid Commands
            - Recieved Responce: 
          - Host: DRAW|1|| S
            - Recieved Responce: 
-         - Host MOVE|6|X|[enter a string that would be longer then buffer]
+         - Host MOVE|6[size of buffer]|X|[enter a string that would be longer then buffer]|
          
 Case 2) Invalid Moves 
         A) We tested moves that were outside of the board (the parenthesis were ommited during testing)
