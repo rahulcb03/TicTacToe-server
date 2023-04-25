@@ -155,5 +155,5 @@ Case 2) Invalid Moves
         C) We tested if the player tries to move the incorrect piece
            We ran the followign move order: 
            - Host: MOVE|6|O|1,1
-             - Recived Message: INVL|13|invalid piece|
+             - Recived Message: INVL|14|invalid piece|
         
