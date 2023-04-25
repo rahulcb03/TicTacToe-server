@@ -105,13 +105,13 @@ Case 8) Name is in Use:
 Case 1) Invalid Commands
         A) We tested the following misspellings of commands:
            - PLAY -> ply
-             - Recieved Responce: 
+             - Recieved Responce:  INVL|14|format error|
            - MOVE -> mv
-             - Recieved Responce:
+             - Recieved Responce: INVL|14|format error|
            - RSGN -> resign
-             - Recieved Responce:
+             - Recieved Responce: INVL|14|format error|
            - DRAW -> drw
-             - Recieved Responce:
+             - Recieved Responce: INVL|14|format error|
         
         B) We tested the following incorrect sequence of commands(without any prior messages):
            - Host: Draw |2| A|
@@ -121,33 +121,39 @@ Case 1) Invalid Commands
         
         C) We tested the following incorrect formatting: 
          - Host: MOVE|5|X|1,1|
-           - Recieved Responce: 
+           - Recieved Responce: INVL|14|format error|
          - Host: DRAW|1|S|
-           - Recieved Responce: 
+           - Recieved Responce: INVL|14|format error|
          - Host: RSGN|1|2,2
-           - Recived Responce: 
+           - Recived Responce: INVL|14|format error|
            
          D) We tested not recieveing the correct formatting given correct number of bytes: 
          - Host: MOVE|6|X|1,1
-           - Recieved Responce: 
+           - Recieved Responce: INVL|14|format error|
          - Host: DRAW|1|| S
-           - Recieved Responce: 
+           - Recieved Responce: INVL|14|format error|
          - Host MOVE|6[size of buffer]|X|[enter a string that would be longer then buffer]|
+           - Recieved Responce: INVL|14|format error|
          
 Case 2) Invalid Moves 
         A) We tested moves that were outside of the board (the parenthesis were ommited during testing)
            - (9,9)
-             - Recieved Message: 
+             - Recieved Message: INVL|14|invalid cords|
            - (0,0)
-              - Recieved Message: 
+              - Recieved Message: INVL|14|invalid cords|
            - (1.2,3.4)
-              - Recieved Message: 
+              - Recieved Message: INVL|14|invalid cords|
            - (-1,-1)
-              - Recieved Message: 
+              - Recieved Message: INVL|14|invalid cords|
         
         B) We tested if the cell was already occupied
            We ran the following move order: 
            - Host: 1,1
            - Second Player: 1,1 
-             - Recieved Message: 
+             - Recieved Message: INVL|16|position filled|
+             
+        C) We tested if the player tries to move the incorrect piece
+           We ran the followign move order: 
+           - Host: MOVE|6|O|1,1
+             - Recived Message: INVL|13|invalid piece|
         
