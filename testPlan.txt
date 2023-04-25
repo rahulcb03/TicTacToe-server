@@ -3,12 +3,17 @@ Testing:
 ttts.c
 ttt.c
 
-Initial Setup: In order to test functionality we played a normal game of tic-tac-toe using the program. 
-    - First we started the server on one computer by logging to ilab1@cs.rutgers.edu(or any other rutgers machine) and then compiled the ttts.c program. 
-    - After that we ran the command "./ttts [port#]" replacing the port# with a port number that is avalible. 
-    - Then the the other person, the one who didn't set up the server connection, logged onto another ilab machine (seperate from the inital one
+
+Initial Setup: In order to test functionality, we played a normal game of tic-tac-toe using the program. 
+    - First, we started the server on one computer by logging to ilab1@cs.rutgers.edu(or any other rutgers machine) and then compiled the ttts.c 
+      program. 
+    - After that, we ran the command "./ttts [port#]" replacing the port# with a port number that is available. 
+    - Then the other person, the one who didn't set up the server connection, logged onto another ilab machine (separate from the initial one
       connected) and then ran "./ttt [domain name of the host server][port#]"
-    - Then the program will have matched us both togehter for a game 
+    - Then, the program will match us both together for a game 
+
+* For testing documentation purposes, “Host” is the initial player that connected to the server, and “Second player” is the second player to connect
+
 
                                                                       Functionality Testing:
     
@@ -19,9 +24,9 @@ Case 1) Host wins Test | Vertical Win Test
          - Host: 2,1 
          - Second player: 3,2
          - Host: 3,1 --- Host Wins
-           - Host Recieves: 
+           - Host Receives: 
              - OVER|29|W|[Host] has completed a line.|
-           - Second Player Recieves: 
+           - Second Player Receives: 
              - OVER|29|L|[Host] has completed a line.|
        
 Case 2) Second Player wins | Horizontal Win Test 
@@ -32,22 +37,24 @@ Case 2) Second Player wins | Horizontal Win Test
          - Second player: 3,3
          - Host: 1,2 
          - Second player: 3,1 - Second Player Wins
-           - Second player Recieves: 
+           - Second player Receives: 
              - OVER|38|W|[Second player] has completed a line.|
-           - Host Recieves: 
+           - Host Receives: 
              - OVER|38|L|[Second player] has completed a line.|
 
-Case 3) Diagonal Win Test 
+
+Case 3) Diagonal Win-Test 
         We ran the following move order:
          - Host: 2,2
          - Second player: 2,3
          - Host: 3,3 
          - Second player: 3,2
          - Host: 1,1 - Host Wins
-           - Host Recieves: 
+           - Host Receives: 
              - OVER|29|W|[Host] has completed a line.|
-           - Second Player Recieves: 
+           - Second Player Receives: 
              - OVER|29|L|[Host] has completed a line.|
+
 
 Case 4) Draw Testing | Draw Message Testing 
         A) Accepting the Draw
@@ -55,7 +62,7 @@ Case 4) Draw Testing | Draw Message Testing
            - Host: 1,1
            - Second Player: Draw |2| S|
            - Host: Draw |2| A|
-           - Both players recieve their resepective message: 
+           - Both players recieve their respective message: 
               - OVER|21|W|[HOST] has resigned.|
               - OVER|30|W|[Second Player] has resigned.|
            
@@ -68,9 +75,9 @@ Case 4) Draw Testing | Draw Message Testing
            - Host: 1,2
            - Second Player: 3,2
            - Host: 1,3 - Host Wins
-             - Host Recieves: 
+             - Host Receives: 
                - OVER|29|W|[Host] has completed a line.|
-             - Second Player Recieves: 
+             - Second Player Receives: 
                - OVER|29|L|[Host] has completed a line.|
         
  
@@ -78,36 +85,37 @@ Case 5) Resignation Testing | Resignation Message Testing
         We ran the following move order: 
         - Host: RSGN |0|
         - Second Player Wins
-          - Second player Recieves: 
+          - Second player Receives: 
             - OVER|38|W|[Second player] has completed a line.|
-          - Host Recieves: 
+          - Host Receives: 
             - OVER|38|L|[Second player] has completed a line.|
             
 Case 6) Multiple Games Happening At Once | Multi-threading
-        - After we did the inital set up we did the following:  
-          - We logged onto another ilab machine (differnt from the inital two we connected two) and then ran the command "./ttt [domain name of the host
-            server][port#]"
+        - After we did the initial set up we did the following:  
+          - We logged onto another ilab machine (differnt from the inital two we connected two) and then ran the command "./ttt [domain name of the 
+            host server][port#]"
           - Then we did the same thing again in another ilab machine(different then the three already connected two)
           - The result of this is 2 concurrent games that are being played on the same server, proving the functionality of multithreading in this
             program
 
+
 Case 7) Name is in Use: 
         - We wanted to test if the program is able to detect the same name
-        - To test this we ran a regular game and had one player sign in as the name: "BOB"
-        - Then the second play also tried the name "BOB"
-        - The second player got the responce: INVL|12|name in use|
+        - To test this, we ran a regular game and had one player sign in as the name: "BOB"
+        - Then, the second play also tried the name "BOB"
+        - The second player got the response: INVL|12|name in use|
           
                                                                       Error Testing:
 Case 1) Invalid Commands
         A) We tested the following misspellings of commands:
            - PLAY -> ply
-             - Recieved Responce:  INVL|14|format error|
+             - Recieved Response:  INVL|14|format error|
            - MOVE -> mv
-             - Recieved Responce: INVL|14|format error|
+             - Recieved Response: INVL|14|format error|
            - RSGN -> resign
-             - Recieved Responce: INVL|14|format error|
+             - Recieved Response: INVL|14|format error|
            - DRAW -> drw
-             - Recieved Responce: INVL|14|format error|
+             - Recieved Response: INVL|14|format error|
         
         B) We tested the following incorrect sequence of commands(without any prior messages):
            - Host: Draw |2| A|
@@ -117,39 +125,38 @@ Case 1) Invalid Commands
         
         C) We tested the following incorrect formatting: 
          - Host: MOVE|5|X|1,1|
-           - Recieved Responce: INVL|14|format error|
+           - Recieved Response: INVL|14|format error|
          - Host: DRAW|1|S|
-           - Recieved Responce: INVL|14|format error|
+           - Recieved Response: INVL|14|format error|
          - Host: RSGN|1|2,2
-           - Recived Responce: INVL|14|format error|
+           - Received Response: INVL|14|format error|
            
-         D) We tested not recieveing the correct formatting given correct number of bytes: 
+         D) We tested not receiving the correct formatting given correct number of bytes: 
          - Host: MOVE|6|X|1,1
-           - Recieved Responce: INVL|14|format error|
+           - Recieved Response: INVL|14|format error|
          - Host: DRAW|1|| S
-           - Recieved Responce: INVL|14|format error|
+           - Recieved Response: INVL|14|format error|
          - Host MOVE|6[size of buffer]|X|[enter a string that would be longer then buffer]|
-           - Recieved Responce: INVL|14|format error|
+           - Recieved Response: INVL|14|format error|
          
 Case 2) Invalid Moves 
-        A) We tested moves that were outside of the board (the parenthesis were ommited during testing)
+        A) We tested moves that were outside of the board (the parenthesis were omitted during testing)
            - (9,9)
-             - Recieved Message: INVL|14|invalid cords|
+             - Received Message: INVL|14|invalid cords|
            - (0,0)
-              - Recieved Message: INVL|14|invalid cords|
+              - Received Message: INVL|14|invalid cords|
            - (1.2,3.4)
-              - Recieved Message: INVL|14|invalid cords|
+              - Received Message: INVL|14|invalid cords|
            - (-1,-1)
-              - Recieved Message: INVL|14|invalid cords|
+              - Received Message: INVL|14|invalid cords|
         
         B) We tested if the cell was already occupied
            We ran the following move order: 
            - Host: 1,1
            - Second Player: 1,1 
-             - Recieved Message: INVL|16|position filled|
+             - Received Message: INVL|16|position filled|
              
         C) We tested if the player tries to move the incorrect piece
-           We ran the followign move order: 
+           We ran the following move order: 
            - Host: MOVE|6|O|1,1
-             - Recived Message: INVL|14|invalid piece|
-        
+             - Received Message: INVL|14|invalid piece|
