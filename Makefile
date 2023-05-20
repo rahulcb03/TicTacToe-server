@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -std=c99 -Wall -g -fsanitize=address,undefined 
+CFLAGS = -std=c99 -Wall -g -fsanitize=address,undefined -pthread
 
 OBJ_TTTS = ttts.o
 OBJ_TTT = ttt.o
