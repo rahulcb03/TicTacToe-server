@@ -69,10 +69,12 @@ int openListener(char *port, int qLen){
 }
 
 int checkName(player_t *head, char *name){
-	player_t *ptr = head; 
-	 
+	player_t *ptr = head;	
+       	
 	while(ptr != NULL){
 		if(strcmp(ptr->name, name) ==0){ return 1; }
+		
+		ptr = ptr->next; 
 	}
 	return 0; 
 
@@ -114,11 +116,12 @@ int main(int argc, char ** argv){
 	
 		}
 			
-		if(ptr==NULL){
+		if(head==NULL){
 			ptr = (player_t *)malloc(sizeof(player_t) ); 
 			ptr->len =0; 
 			ptr->sck = sock1; 
-			ptr->next = NULL; 
+			ptr->next = NULL;
+		       	head = ptr; 	
 		}	
 		else{
 			ptr->next = (player_t *)malloc(sizeof(player_t) ); 
@@ -133,9 +136,7 @@ int main(int argc, char ** argv){
 		int cont; 
 		do{
 			cont =0; 
-			if(p_recv(ptr, msg) ){
-				//FIXME: disconnect 
-			}				
+			p_recv(ptr, msg); 		
 				
 			if(strcmp(msg, "PLAY") ==0){
 				if( checkName(head, &msg[5+strlen(&msg[5])+1] )) {
@@ -177,9 +178,7 @@ int main(int argc, char ** argv){
 		//check if client2 types PLAY and the name is valid 
 		do{
 			cont =0; 
-			if(p_recv(ptr, msg) ){
-				//FIXME: disconnect 
-			}				
+			p_recv(ptr, msg); 			
 				
 			if(strcmp(msg, "PLAY") ==0){
 				//do something with name herei
@@ -202,9 +201,13 @@ int main(int argc, char ** argv){
 			}
 
 		}while(cont); 
+		
+		threadArgs *args  = (threadArgs*) malloc(sizeof(threadArgs));
+		args->h = &head; 
+		args->node = p;
 
 		//this will call play game which will handle the game 
-		pthread_create(&id[i],NULL, playGame , p ); 
+		pthread_create(&id[i],NULL, playGame , args ); 
 		i++; 	
 	}
 

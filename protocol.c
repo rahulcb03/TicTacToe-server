@@ -8,12 +8,15 @@ int p_recv( player_t *p, char *msg ){
 
 	int sock = p->sck; 
 	char *buf= p->buffer; 
-	
-	int bytes = read(sock, &buf[p->len], BUFSIZE - p->len); 
-	p->len += bytes; 
+	int bytes;
 
-	buf[p->len] = '\0';
+	while(p->len < 7)
+	{	
+		bytes = read(sock, &buf[p->len], BUFSIZE - p->len); 
+		p->len += bytes; 
+	}
 	
+	buf[p->len] = '\0'; 
 	buf[4] = '\0'; 
 	
 	//target refers to the fields 
@@ -37,15 +40,27 @@ int p_recv( player_t *p, char *msg ){
 			}
 		}
 	}
-
-	char *temp = strtok(&buf[5], "|"); 
-	if (temp ==NULL){return 1; }
+	
+	char *temp; 
+	while( (temp = strtok(&buf[5], "|")) == NULL){
+		bytes = read(sock, &buf[p->len], BUFSIZE - p->len); 
+		p->len += bytes; 
+	}
 	
 	int x = atoi(temp); 
 	int pos = 5 + strlen(temp) +1; 
 	int fields=0; 
 	
 	if(expctBytes != -1 && x!= expctBytes) {return 1; }
+	
+	if(x>= BUFSIZE - (pos+1) ) {return 1; }
+
+	for(int i= pos; i<(pos+x) && i<p->len; i++){
+		if(buf[i] == '|'){ fields++; }
+	}
+	if(fields>target) {return 1; }
+	if(fields<target && x<strlen(&buf[pos]) ){ return 1;}
+	
 
 	while(x>strlen(&buf[pos] ) ){
 		bytes= read(sock, &buf[p->len], BUFSIZE - p->len); 
@@ -59,8 +74,10 @@ int p_recv( player_t *p, char *msg ){
 			
 		buf[p->len] = '\0'; 
 	}
-		
-	memmove(msg, buf, pos + x-1); 
+
+	
+	buf[pos+x-1] = '\0'; 
+	memmove(msg, buf, pos + x); 
 	memmove(buf, &buf[pos+x], p->len - (pos+x)); 
 	p->len -= (pos+x);  
 	return 0; 
@@ -71,6 +88,7 @@ int p_recv( player_t *p, char *msg ){
 
 //Writing to the STDOUT
 void wrt(int fd, char *buf, int bufLen){
+//	write(1, buf, bufLen); 
 	if(write(fd, buf, bufLen) == -1){
 		perror("write");
 		exit(1); 
@@ -119,22 +137,49 @@ int checkWin(char *board){
 	return 0; 
 }
 
+void removePlayers(player_t **head, player_t *p ){
+	player_t *ptr = *head; 
+	player_t *temp;
 
-void playGame( player_t *player1 , player_t *player2){
-	//this will handle the actuall playing of the game
+	if(strcmp(ptr->name, p->name) == 0 ){
+		temp = *head;
+		*head = ((ptr->next) ->next); 	
+		free (temp->next) ;
+		free(temp);
+		return;
+	}
+	while(strcmp( (ptr->next)->name, p->name) != 0 ){
+		ptr = ptr->next; 
+	}
 
-	//First write to both sockets to BEGN sock1: X, sock2: O
+	temp = ptr->next; 
+
+	ptr->next = ( (ptr->next)->next) ->next;
+
+	free(temp ->next);
+	free(temp); 	
 	
+}
+
+void* playGame( void *args){
+	//this will handle the actuall playing of the game
+	threadArgs *a = (threadArgs*) args;  
+	//First write to both sockets to BEGN sock1: X, sock2: O
+	player_t **head = a->h; 
+	player_t *player1 =  a->node;
+	player_t *player2 =  player1->next; 
+	free(a);
 
 	char hold[100]; 
 	int length = 2+strlen(player2->name)+1; 
-	snprintf(hold, 100, "BEGN|%d|X|%s\n", length, player2->name); 
+	snprintf(hold, 100, "BEGN|%d|X|%s|\n", length, player2->name); 
 	wrt(player1->sck, hold, strlen(hold) ); 
+	player1->piece = 'X';
 
 	length = 2+strlen(player1->name) +1; 
-	snprintf(hold, 100, "BEGN|%d|X|%s\n", length, player1->name); 
+	snprintf(hold, 100, "BEGN|%d|O|%s|\n", length, player1->name); 
 	wrt(player2->sck, hold, strlen(hold)); 
-
+	player2->piece = 'O';
 	
 	char board[] = "........."; //empty board
 	int count =0 ;
@@ -142,7 +187,7 @@ void playGame( player_t *player1 , player_t *player2){
 	int x, y, res; 
 	player_t *swap1, *swap2; 
 	
-
+	
 	char msg[100]; 	
 	do{ 
 		
@@ -160,10 +205,14 @@ void playGame( player_t *player1 , player_t *player2){
 			contFlag =0; 		
 			//read command from sock1
 			if(p_recv(swap1, msg)){
-				//FIXME: this should end the connection and the game
-				strcpy(hold, "INVL|14|format error|"); 
+			 //should end the connection and the game
+				strcpy(hold, "INVL|14|format error|\n"); 
 				wrt(swap1->sck, hold, strlen(hold) ); 
-				contFlag =1; 
+				close( swap1->sck); 
+				close( swap2->sck); 
+				removePlayers(head, player1 );
+				return NULL;
+				 
 			}	
 
 											
@@ -180,15 +229,30 @@ void playGame( player_t *player1 , player_t *player2){
 					continue; 
 				}
 				
+				if(x<0 || x>2 || y<0 || y>2 ) {
+					strcpy(hold, "INVL|14|invalid cords|\n");
+                                        wrt(swap1->sck, hold, strlen(hold) );
+                                        contFlag = 1;
+                                        continue;
+                                }
+
+				if(swap1->piece != msg[7] ){
+					strcpy(hold, "INVL|14|invalid piece|\n");
+                                        wrt(swap1->sck, hold, strlen(hold) );
+                                        contFlag = 1;
+                                        continue;
+				}
+
+						
 				//set the board at the cords given 
 					
 				board[3*x + y] = msg[7]; 
 				
-				//check if win or draw
+				//check if in or draw
 				res  = checkWin(board); 
 				if(res == 1){	
 					length = strlen(player1->name) + 11; 
-					snprintf(hold, 50, "OVER|%d|W|%s has won|\n", length, player1->name); 
+					snprintf(hold, 100, "OVER|%d|W|%s has won|\n", length, player1->name); 
 					wrt(swap1->sck, hold, strlen(hold) );
 					hold[8] = 'L'; 
 					wrt(swap2->sck, hold, strlen(hold)); 
@@ -201,9 +265,10 @@ void playGame( player_t *player1 , player_t *player2){
 						overFlag = 1; 
 					}else{
 						strcpy(hold, "MOVD|16|");
-					       	strcat(hold, &msg[7]); 
+					       	strcat(hold, &msg[7]);
+						strcat(hold, "|"); 
 						strcat(hold, board); 	
-						strcat(hold, "\n"); 
+						strcat(hold, "|\n"); 
 						wrt(swap1->sck, hold, strlen(hold) );
 						wrt(swap2->sck , hold, strlen(hold) ); 	
 
@@ -211,10 +276,10 @@ void playGame( player_t *player1 , player_t *player2){
 				}
 			}
 			if(strcmp(msg, "RSGN" )==0 ){
-				length = strlen(player1->name) + 16; 
-				snprintf(hold, 50, "OVER|%d|L|%s has resigned|\n", length, player1->name); 
+				length = strlen(swap1->name) + 16; 
+				snprintf(hold, 100, "OVER|%d|L|%s has resigned|\n", length, swap1->name); 
 				wrt(swap1->sck, hold, strlen(hold) );
-				hold[8] = 'L'; 
+				hold[8] = 'W'; 
 				wrt(swap2->sck, hold, strlen(hold)); 
 				overFlag = 1; 
 			}
@@ -227,9 +292,12 @@ void playGame( player_t *player1 , player_t *player2){
 				do{
 					drawFlag =0; 
 					if(p_recv(swap2, msg) ){
-						strcpy(hold, "INVL|14|format error|"); 
-						wrt(swap2->sck, hold, strlen(hold) ); 
-						drawFlag =1; 
+						strcpy(hold, "INVL|14|format error|\n"); 
+						wrt(swap1->sck, hold, strlen(hold) ); 
+						close( swap1->sck); 
+						close( swap2->sck); 
+						removePlayers(head, player1);
+						return NULL;
 					}
 					if(strcmp(msg, "DRAW") != 0 ){
 						strcpy(hold, "INVL|11|enter DRAW|\n");
@@ -263,7 +331,9 @@ void playGame( player_t *player1 , player_t *player2){
 		}while(contFlag); 			
 		count++; 	
 		
-	}while(!overFlag); 
+	}while(!overFlag);
+       	close(player1->sck); 
+	close(player2->sck);
+       	removePlayers(head, player1);	
+	return NULL;	
 }
-
-
